@@ -1,0 +1,15 @@
+[Unit]
+Description=golang proxy
+ConditionPathExists=/srv/www/xypro.tech
+
+[Service]
+PIDFile=/tmp/proxy.pid
+User=server
+Group=server
+WorkingDirectory=/srv/www/xypro.tech
+ExecStart=/srv/www/xypro.tech/proxy
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

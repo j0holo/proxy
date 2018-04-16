@@ -8,6 +8,8 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"os/signal"
+	"syscall"
 	"time"
 )
 
@@ -39,6 +41,12 @@ func main() {
 		log.Fatal(err)
 	}
 	log.SetOutput(f)
+
+	// Listen to signals of the OS
+	var signals = make(chan os.Signal)
+	signal.Notify(signals, syscall.SIGTERM)
+	signal.Notify(signals, syscall.SIGINT)
+	go handleSignal(signals)
 
 	proxyHandler := http.HandlerFunc(proxyHandler)
 	statsHandler := http.HandlerFunc(statsHandler)
@@ -164,6 +172,14 @@ func proxyRequest(a apiRequest) (response, error) {
 func internalServerError(w http.ResponseWriter, err error) {
 	log.Println(err)
 	http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+}
+
+func handleSignal(sigChan chan os.Signal) {
+	sig := <-sigChan
+
+	log.Printf("Caught signal: %+v.", sig)
+	log.Println("Server is exiting.")
+	os.Exit(0)
 }
 
 // performanceCounter reads the counter channel and stores the result every minute.

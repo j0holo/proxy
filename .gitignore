@@ -1,2 +1,4 @@
 proxy
 proxy.log
+cert.pem
+key.pem

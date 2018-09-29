@@ -1,6 +1,6 @@
 # Proxy - Link Tracker Project
 
-This API proxy is part of the Link Tracker Project.
+This API-driven proxy written in Golang with basic autentication over HTTPS.
 
 **This is a https only proxy and needs a TLS cert and key file.**
 
@@ -70,7 +70,5 @@ A response can look like this:
 ```
 
 **GET /check:**
-A simple GET check for HaProxy health checking.
 
-**GET /stats:**
-Not working
+A simple GET check for HaProxy health checking. Returns the string "Hello, World!" with a status code 200.
